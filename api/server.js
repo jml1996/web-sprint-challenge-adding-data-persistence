@@ -12,7 +12,7 @@ server.use(helmet());
 server.use(express.json());
 
 server.use("/api/projects", ProjectRouter);
-// server.use("/api/resources", ResourceRouter);
+server.use("/api/resources", ResourceRouter);
 // server.use("/api/tasks", TaskRouter);
 
 module.exports = server;
