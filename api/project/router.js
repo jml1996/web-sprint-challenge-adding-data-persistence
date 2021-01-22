@@ -25,13 +25,24 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    console.log(req.body)
     if (!req.body.project_name) {
         res.status(400).json({ message: "project_name is a required field" })
     }
-    Projects.add(req.body)
+    let toBoolPostBody;
+    if (req.body.project_completed === true) {
+        toBoolPostBody = {
+            ...req.body,
+            'project_completed': 1
+        }
+    } else {
+        toBoolPostBody = {
+            ...req.body,
+            'project_completed': 0
+        }
+    }
+    Projects.add(toBoolPostBody)
         .then(added => {
-            if (req.body.project_completed !== 1){
+            if (added['project_completed'] !== 1){
                 const booleanAddedProj = {
                     ...added,
                     'project_completed': false
