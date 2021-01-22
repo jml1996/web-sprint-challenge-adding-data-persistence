@@ -1,7 +1,5 @@
 const express = require('express')
-
 const router = express.Router()
-
 const Projects = require('./model.js')
 
 router.get('/', (req, res) => {
