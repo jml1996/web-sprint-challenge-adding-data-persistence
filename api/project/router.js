@@ -24,42 +24,43 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     if (!req.body.project_name) {
-        res.status(400).json({ message: "project_name is a required field" })
-    }
-    let toBoolPostBody;
-    if (req.body.project_completed === true) {
-        toBoolPostBody = {
-            ...req.body,
-            'project_completed': 1
-        }
+        res.status(400).json({ error: 'project_name is a required field' })
     } else {
-        toBoolPostBody = {
-            ...req.body,
-            'project_completed': 0
-        }
-    }
-    Projects.add(toBoolPostBody)
-        .then(added => {
-            if (added['project_completed'] !== 1){
-                const booleanAddedProj = {
-                    ...added,
-                    'project_completed': false
-                }
-                res.status(201).json(booleanAddedProj)
-            } else {
-                const booleanAddedProj = {
-                    ...added,
-                    'project_completed': true
-                }
-                res.status(201).json(booleanAddedProj)
+        let toBoolPostBody;
+        if (req.body.project_completed === true) {
+            toBoolPostBody = {
+                ...req.body,
+                'project_completed': 1
             }
-        })
-        .catch(error => {
-            console.log(error)
-            res.status(500).json({
-                message: 'Error posting new project'
+        } else {
+            toBoolPostBody = {
+                ...req.body,
+                'project_completed': 0
+            }
+        }
+        Projects.add(toBoolPostBody)
+            .then(added => {
+                if (added['project_completed'] !== 1){
+                    const booleanAddedProj = {
+                        ...added,
+                        'project_completed': false
+                    }
+                    res.status(201).json(booleanAddedProj)
+                } else {
+                    const booleanAddedProj = {
+                        ...added,
+                        'project_completed': true
+                    }
+                    res.status(201).json(booleanAddedProj)
+                }
             })
-        })
+            .catch(error => {
+                console.log(error)
+                res.status(500).json({
+                    message: 'Error posting new project'
+                })
+            })
+    }
 })
 
 module.exports = router
